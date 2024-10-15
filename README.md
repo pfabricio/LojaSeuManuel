@@ -1,7 +1,7 @@
 # Loja do Manuel
 
 ## Descrição do Projeto
-Um microserviço para fazer o empacotamento efeciente de produtos dos pedidos.
+Um microserviço para fazer o empacotamento efeciente de produtos dos pedidos. Projeto destinato para um teste técnico.
 
 ## Acesso ao Projeto
 Para acessar o projeto, use as seguintes credenciais:
