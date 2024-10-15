@@ -13,7 +13,7 @@ consumindo a rota **api/Auth/login**
   copie o jwt Token gerado e coloque no swagger ou qualquer outro software que esteja usando para consumir a api
 
 ## Como Executar o Projeto
-O microserviço tem duas rotas
+Para acessar a rota do empacomento
 **/api/Empacotamento/processarpedidos**
 
 ## Contato
