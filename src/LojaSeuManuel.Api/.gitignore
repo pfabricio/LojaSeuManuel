@@ -1,0 +1,34 @@
+﻿# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# User-specific files
+*.rsuser
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Visual Studio generated files
+.vscode/
+.vs/
+
+# Auto-generated files
+*.exe
+*.dll
+*.log
+*.sql
+*.sqlite
+
+# Package directories
+node_modules/
+packages/
+
+# Backup files
+*.bak
