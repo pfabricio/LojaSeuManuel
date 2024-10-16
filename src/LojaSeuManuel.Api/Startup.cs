@@ -71,7 +71,7 @@ public class Startup
         services.AddEndpointsApiExplorer();
 
         services.AddScoped<IUserService, UserService>();
-        services.AddScoped<EmpacotamentoService>();
+        services.AddScoped<IEmpacotamentoService, EmpacotamentoService>();
     }
 
     public void Configure(IApplicationBuilder app, IWebHostEnvironment env)

@@ -1,5 +1,5 @@
 ﻿using LojaSeuManuel.Api.Models;
-using LojaSeuManuel.Api.Services;
+using LojaSeuManuel.Api.Services.Interfaces;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
@@ -11,8 +11,8 @@ namespace LojaSeuManuel.Api.Controllers
     [ApiController]
     public class EmpacotamentoController : ControllerBase
     {
-        private readonly EmpacotamentoService _empacotamentoService;
-        public EmpacotamentoController(EmpacotamentoService empacotamentoService)
+        private readonly IEmpacotamentoService _empacotamentoService;
+        public EmpacotamentoController(IEmpacotamentoService empacotamentoService)
         {
             _empacotamentoService = empacotamentoService;
         }
@@ -23,8 +23,7 @@ namespace LojaSeuManuel.Api.Controllers
             try
             {
                 var resultado = _empacotamentoService.EmpacotarPedidos(pedidosRequest.Pedidos);
-                var jsonResultado = JsonConvert.SerializeObject(resultado, Newtonsoft.Json.Formatting.Indented);
-                return Ok(jsonResultado);
+                return Ok(resultado);
             }
             catch (Exception e)
             {

@@ -1,8 +1,9 @@
 ﻿using LojaSeuManuel.Api.Models;
+using LojaSeuManuel.Api.Services.Interfaces;
 
 namespace LojaSeuManuel.Api.Services;
 
-public class EmpacotamentoService
+public class EmpacotamentoService: IEmpacotamentoService
 {
     private readonly List<Caixas> _caixasDisponiveis = new List<Caixas>
     {
@@ -11,9 +12,9 @@ public class EmpacotamentoService
         new Caixas { CaixaId = "Caixa 3", Dimensoes = new Dimensoes { Altura = 50, Largura = 80, Comprimento = 60 } }
     };
 
-    public List<PedidoEmpacotado> EmpacotarPedidos(List<Pedidos> pedidos)
+    public PedidoResponse EmpacotarPedidos(List<Pedidos> pedidos)
     {
-        var pedidosEmpacotados = new List<PedidoEmpacotado>();
+        var pedidosEmpacotados = new PedidoResponse();
 
         foreach (var pedido in pedidos)
         {
@@ -59,7 +60,7 @@ public class EmpacotamentoService
                 pedidoEmpacotado.Caixas.Add(caixaUsada);
             }
 
-            pedidosEmpacotados.Add(pedidoEmpacotado);
+            pedidosEmpacotados.Pedidos.Add(pedidoEmpacotado);
         }
 
         return pedidosEmpacotados;
