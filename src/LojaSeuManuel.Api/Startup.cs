@@ -50,7 +50,7 @@ public class Startup
                 Scheme = "bearer",
                 BearerFormat = "JWT",
                 In = ParameterLocation.Header,
-                Description = "Insira o token JWT desta forma: Bearer {seu token}"
+                Description = "Insira o token JWT gerado abaixo:"
             });
             c.AddSecurityRequirement(new OpenApiSecurityRequirement
             {
