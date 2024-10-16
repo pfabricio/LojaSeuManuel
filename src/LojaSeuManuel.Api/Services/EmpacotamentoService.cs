@@ -18,50 +18,63 @@ public class EmpacotamentoService
         foreach (var pedido in pedidos)
         {
             var pedidoEmpacotado = new PedidoEmpacotado { PedidoId = pedido.PedidoId };
-            var caixasUsadas = new Dictionary<string, Caixas>();
+            var produtosRestantes = new List<Produtos>(pedido.Produtos);
 
-            foreach (var produto in pedido.Produtos)
+            produtosRestantes.Sort((a, b) => a.Dimensoes.Volume.CompareTo(b.Dimensoes.Volume));
+
+            while (produtosRestantes.Any())
             {
-                bool produtoEmpacotado = false;
-                foreach (var caixa in _caixasDisponiveis)
-                {
-                    if (caixa.CabeNaCaixa(produto.Dimensoes.Volume))
-                    {
-                        if (!caixasUsadas.ContainsKey(caixa.CaixaId))
-                        {
-                            caixasUsadas[caixa.CaixaId] = caixa;
-                        }
+                var caixaUsada = new CaixaEmpacotada { Produtos = new List<string>() };
+                bool caixaSelecionada = false;
 
-                        caixasUsadas[caixa.CaixaId].Produtos.Add(produto.ProdutoId);
-                        caixasUsadas[caixa.CaixaId].EspacoUsado += produto.Dimensoes.Volume;
-                        produtoEmpacotado = true;
-                        break;
+                foreach (var produto in produtosRestantes.ToList())
+                {
+                    Caixas melhorCaixa = EncontrarMelhorCaixa(produto);
+
+                    if (melhorCaixa != null)
+                    {
+                        caixaUsada.CaixaId = melhorCaixa.CaixaId;
+                        caixaUsada.Produtos.Add(produto.ProdutoId);
+                        melhorCaixa.EspacoUsado += produto.Dimensoes.Volume;
+
+                        produtosRestantes.Remove(produto);
+                        caixaSelecionada = true;
                     }
                 }
 
-                if (!produtoEmpacotado)
+                if (!caixaSelecionada)
                 {
-                    pedidoEmpacotado.Caixas.Add(new CaixaEmpacotada
+                    foreach (var produto in produtosRestantes)
                     {
-                        CaixaId = null,
-                        Produtos = new List<string>{ produto.ProdutoId },
-                        Observacao = "Produto não cabe em nenhuma caixa disponível."
-                    });
+                        pedidoEmpacotado.Caixas.Add(new CaixaEmpacotada
+                        {
+                            CaixaId = null,
+                            Produtos = new List<string> { produto.ProdutoId },
+                            Observacao = "Produto não cabe em nenhuma caixa disponível."
+                        });
+                    }
+                    break;
                 }
-            }
 
-            foreach (var caixaUsada in caixasUsadas.Values)
-            {
-                pedidoEmpacotado.Caixas.Add(new CaixaEmpacotada
-                {
-                    CaixaId = caixaUsada.CaixaId,
-                    Produtos = new List<string>(caixaUsada.Produtos)
-                });
+                pedidoEmpacotado.Caixas.Add(caixaUsada);
             }
 
             pedidosEmpacotados.Add(pedidoEmpacotado);
         }
 
         return pedidosEmpacotados;
+    }
+
+    private Caixas EncontrarMelhorCaixa(Produtos produto)
+    {
+        foreach (var caixa in _caixasDisponiveis.OrderBy(c => c.Dimensoes.Volume))
+        {
+            if (caixa.CabeNaCaixa(produto.Dimensoes.Volume))
+            {
+                return caixa;
+            }
+        }
+
+        return null;
     }
 }

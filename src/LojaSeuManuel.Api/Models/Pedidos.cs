@@ -8,5 +8,5 @@ public class Pedidos
     public int PedidoId { get; set; }
 
     [JsonProperty("produtos")]
-    public List<Produtos> Produtos { get; set; }
+    public List<Produtos> Produtos { get; set; } = new List<Produtos>();
 }

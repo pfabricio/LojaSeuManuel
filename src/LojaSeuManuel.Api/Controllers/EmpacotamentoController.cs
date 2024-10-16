@@ -11,12 +11,18 @@ namespace LojaSeuManuel.Api.Controllers
     [ApiController]
     public class EmpacotamentoController : ControllerBase
     {
+        private readonly EmpacotamentoService _empacotamentoService;
+        public EmpacotamentoController(EmpacotamentoService empacotamentoService)
+        {
+            _empacotamentoService = empacotamentoService;
+        }
+
         [HttpPost("processarpedidos")]
-        public IActionResult ProcessarPedidos([FromBody] PedidosRequest pedidosRequest, EmpacotamentoService empacotamentoService)
+        public IActionResult ProcessarPedidos([FromBody] PedidosRequest? pedidosRequest)
         {
             try
             {
-                var resultado = empacotamentoService.EmpacotarPedidos(pedidosRequest.Pedidos);
+                var resultado = _empacotamentoService.EmpacotarPedidos(pedidosRequest.Pedidos);
                 var jsonResultado = JsonConvert.SerializeObject(resultado, Newtonsoft.Json.Formatting.Indented);
                 return Ok(jsonResultado);
             }
